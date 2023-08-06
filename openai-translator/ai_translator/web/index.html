@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Translator</title>
+    <style>
+        /* Add some basic CSS styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .file-upload {
+            margin-bottom: 20px;
+        }
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        .file-upload label {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .file-upload label:hover {
+            background-color: #45a049;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+        }
+        .progress-bar div {
+            height: 20px;
+            background-color: #4CAF50;
+            width: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Translator</h1>
+        <div class="file-upload">
+            <label for="file-upload">Select a PDF file</label>
+            <input id="file-upload" type="file" name="file" accept=".pdf"/>
+        </div>
+        <select id="src-lang" disabled>
+            <option value="en">English</option>
+            <option value="en">Chinese</option>
+            <option value="en">French</option>
+            <!-- Add more language options here -->
+        </select>
+        <select id="dst-lang" disabled>
+            <option value="zh-cn">Chinese</option>
+            <option value="zh-cn">English</option>
+            <option value="zh-cn">French</option>
+            <!-- Add more language options here -->
+        </select>
+        <button id="submit-button" disabled>Translate</button>
+        <div class="progress-bar">
+            <div></div>
+        </div>
+        <a id="download-link" href="#" download style="display: none;">Download Translated PDF</a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

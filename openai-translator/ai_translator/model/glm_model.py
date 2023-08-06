@@ -8,10 +8,11 @@ class GLMModel(Model):
         self.model_url = model_url
         self.timeout = timeout
 
-    def make_request(self, prompt):
+    # TODO: Implement this method
+    def make_request(self, prompt: list):
         try:
             payload = {
-                "prompt": prompt,
+                "prompt": ''.join(prompt),  # TODO: Check if this is correct
                 "history": []
             }
             response = requests.post(self.model_url, json=payload, timeout=self.timeout)

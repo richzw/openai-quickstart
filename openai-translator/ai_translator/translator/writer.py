@@ -1,14 +1,16 @@
+import io
 import os
 from reportlab.lib import colors, pagesizes, units
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image as PlatypusImage
 )
 
 from book import Book, ContentType
 from utils import LOG
+import tempfile
 
 class Writer:
     def __init__(self):
@@ -46,6 +48,9 @@ class Writer:
             for content in page.contents:
                 if content.status:
                     if content.content_type == ContentType.TEXT:
+                        # Add blank line to the PDF
+                        for i in range(content.blank_line_count):
+                            story.append(Spacer(1, 8))
                         # Add translated text to the PDF
                         text = content.translation
                         para = Paragraph(text, simsun_style)
@@ -68,6 +73,28 @@ class Writer:
                         pdf_table = Table(table.values.tolist())
                         pdf_table.setStyle(table_style)
                         story.append(pdf_table)
+                    elif content.content_type == ContentType.IMAGE:
+                        # Add image to the PDF
+                        image = content.translation
+                        image_params = content.image_params
+                        LOG.debug(f"writer image type: {type(image)}")
+
+                        # error: TypeError: expected str, bytes or os.PathLike object, not ImageReader
+                        # image_stream = io.BytesIO()
+                        # image.save(image_stream, format='PNG')
+                        # image_stream.seek(0)
+                        # image_reader = ImageReader(image_stream)
+
+                        image_stream = io.BytesIO()
+                        image.save(image_stream, format='PNG')
+
+                        # Save to a temporary file
+                        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+                        temp_file.write(image_stream.getvalue())
+                        temp_file.close()
+
+                        story.append(PlatypusImage(temp_file.name, width=image_params[0], height=image_params[1]))
+
             # Add a page break after each page except the last one
             if page != book.pages[-1]:
                 story.append(PageBreak())
@@ -100,6 +127,10 @@ class Writer:
                             # body = '\n'.join(['| ' + ' | '.join(row) + ' |' for row in table.values.tolist()]) + '\n\n'
                             body = '\n'.join(['| ' + ' | '.join(str(cell) for cell in row) + ' |' for row in table.values.tolist()]) + '\n\n'
                             output_file.write(header + separator + body)
+                        elif content.content_type == ContentType.IMAGE:
+                            # TODO: Add image to the Markdown file
+                            image = content.translation
+                            output_file.write(image)
 
                 # Add a page break (horizontal rule) after each page except the last one
                 if page != book.pages[-1]:

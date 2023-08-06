@@ -11,26 +11,19 @@ class OpenAIModel(Model):
         self.model = model
         openai.api_key = api_key
 
-    def make_request(self, prompt):
+    def make_request(self, message: list):
         attempts = 0
         while attempts < 3:
             try:
-                if self.model == "gpt-3.5-turbo":
-                    response = openai.ChatCompletion.create(
-                        model=self.model,
-                        messages=[
-                            {"role": "user", "content": prompt}
-                        ]
-                    )
-                    translation = response.choices[0].message['content'].strip()
-                else:
-                    response = openai.Completion.create(
-                        model=self.model,
-                        prompt=prompt,
-                        max_tokens=150,
-                        temperature=0
-                    )
-                    translation = response.choices[0].text.strip()
+                response = openai.ChatCompletion.create(
+                    model=self.model,
+                    messages=message,
+                    temperature=0,
+                    top_p=1,
+                    frequency_penalty=0,
+                    presence_penalty=0
+                )
+                translation = response.choices[0].message['content'].strip()
 
                 return translation, True
             except openai.error.RateLimitError:
