@@ -59,12 +59,6 @@ class TableContent(Content):
 
     def set_translation(self, translation, status):
         try:
-            # if not isinstance(translation, str):
-            #     raise ValueError(f"Invalid translation type. Expected str, but got {type(translation)}")
-            #
-            # LOG.debug(translation)
-            # # Convert the string to a list of lists
-            # table_data = [row.strip().split() for row in translation.strip().split('\n')]
             LOG.debug(translation)
             # Create a DataFrame from the table_data
             translated_df = pd.DataFrame(translation[1:], columns=translation[0])

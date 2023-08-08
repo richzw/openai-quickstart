@@ -50,7 +50,7 @@ class Writer:
                     if content.content_type == ContentType.TEXT:
                         # Add blank line to the PDF
                         for i in range(content.blank_line_count):
-                            story.append(Spacer(1, 8))
+                            story.append(Spacer(1, 10))
                         # Add translated text to the PDF
                         text = content.translation
                         para = Paragraph(text, simsun_style)

@@ -17,7 +17,7 @@ class PDFTranslator:
 
         for page_idx, page in enumerate(self.book.pages):
             for content_idx, content in enumerate(page.contents):
-                time.sleep(60)
+                time.sleep(3)
                 prompt_messages = self.model.translate_prompt(content, target_language)
                 LOG.debug(prompt_messages)
                 if prompt_messages:
