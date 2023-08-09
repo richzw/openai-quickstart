@@ -22,7 +22,7 @@ class Model:
     def make_table_prompt(self, table: str, target_language: str) -> list:
         return [{
             "role": "system",
-            "content": f"From the input text, output each of these data products:\n\n"
+            "content": f"From the input text, do a language translation job, here are the steps:\n\n"
                        f"1. (language) Identify the language of input text \n"
                        f"2. (translation) Translate the input text to {target_language} as a native speaker, format and maintain spacing (spaces, separators), and return in tabular form\n"
                        f"3. (output) output the language and translation in json format"
