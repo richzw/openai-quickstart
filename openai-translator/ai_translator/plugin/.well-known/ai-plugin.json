@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "PDF Translator",
+    "name_for_model": "translator",
+    "description_for_human": "PDF Translator. You can translate the PDF file to other language.",
+    "description_for_model": "Plugin for managing PDF translator. Translate the PDF file through provided api.",
+    "auth": {
+      "type": "none"
+    },
+    "api": {
+      "type": "openapi",
+      "url": "http://localhost:8080/openapi.yaml"
+    },
+    "logo_url": "http://localhost:8080/logo.png",
+    "contact_email": "richzw@gmail.com",
+    "legal_info_url": "http://example.com/legal"
+  }

@@ -1,0 +1,50 @@
+openapi: 3.0.1
+info:
+  title: PDF Translator
+  description: A Plugin that allows the user to translate the PDF to any language they want.
+  version: 'v1'
+servers:
+  - url: http://localhost:8080
+paths:
+  /translate:
+    post:
+      operationId: translatePDF
+      summary: Translate the content of PDF file to target language
+      parameters:
+      - content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The PDF file that should be translated to
+                dst_lang:
+                  type: string
+                  description: The language and should be translated to, e.g. Chinese.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/translatePDF'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+    translatePDF:
+      type: string
+      properties:
+        weather:
+          type: string
+          format: binary
+          description: The content of PDF file that has been translated
