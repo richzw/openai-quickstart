@@ -38,13 +38,12 @@ def translate():
     if file.filename == '':
         return 'No selected file', 400
 
-    LOG.debug(request.form.get('src_lang'))
-    LOG.debug(request.form.get('dst_lang'))
-
     translator.translate_pdf(file, "PDF", request.form.get('dst_lang'), './jupyter')
 
     translated_pdf = io.BytesIO()
-    with pdfplumber.open('./jupyter/The_Old_Man_of_the_Sea_Partial_translated.pdf') as pdf:
+    origin_file_name = file.filename.split('.')[0]
+    translated_file_name = origin_file_name + '_translated.pdf'
+    with pdfplumber.open('./jupyter/' + translated_file_name) as pdf:
         for page in pdf.pages:
             translated_pdf.write(page.extract_text().encode('utf-8'))
 
