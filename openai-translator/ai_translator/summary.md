@@ -3,21 +3,30 @@
 
 最近在极客时间学习《AI 大模型应用开发实战营》，自己一边跟着学一边开发了一个进阶版本的 OpenAI-Translator，在这里简单记录下开发过程和心得体会，供有兴趣的同学参考
 
-- 系统概览
+- 功能概览
   - 通过openai的chat API，实现一个pdf翻译器
-  - 通过openai的plugin，实现一个web GUI，可以上传pdf文件，然后翻译成目标语言
-  - 通过openai的plugin，实现一个openapi文档生成器，可以根据路由代码，生成对应的openapi文档
-  
+  - 实现一个web GUI，可以上传pdf文件，然后翻译成目标语言的pdf文件
+  - 实现了一个openai的plugin，pdf翻译器
+
+- 系统概述
   ```mermaid
     graph LR
     0[PDF File] -- Load --> A1[PDF Parser] 
     A2[Model] -- Prompt --> B[ChatGPT]
-    B[ChatGPT] -- Response --> A3[PDF Writer] -- Save --> D[Translated PDF File]
+    B[ChatGPT] -- Response --> A3[Writer] -- Save --> D[Translated PDF File]
     subgraph A[PDF Translator]
      A1[PDF Parser] -- Parsed Content --> A2[Model] 
-     A3[PDF Writer]
+     A3[Writer]
     end
   ```
+  - PDF Parser
+    - 通过pdfminer.six库，解析pdf文件，得到pdf的内容
+    - 通过解析pdf的内容，得到pdf的图片，表格，文本等内容
+  - Model
+    - 通过prompt的方式，把pdf的内容转化为目标语言
+  - Writer
+    - 把翻译后的内容，写入到pdf 或者markdown文件中
+
 - Prompt 优化过程
   - 第一次尝试
     - 为了支持其他语言的翻译，在prompt里把目标语言设置为变量 `{target_language}`
